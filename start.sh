@@ -49,6 +49,4 @@ fi
 # allow apach to write to workdir even if is mont as volume
 chmod -R o+w .
 
-ls -la .
-
 exec apache2-foreground

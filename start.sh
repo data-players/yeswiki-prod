@@ -10,7 +10,7 @@ then
   echo "git repository environement variable defined"
   export REMOTE=$REPOSITORY
 else
-	echo "not repository"
+	echo "not git repository environement variable defined"
 fi
 
 if [ "$(ls -A $DIR)" ]; then

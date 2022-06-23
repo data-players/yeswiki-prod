@@ -1,0 +1,8 @@
+source/vendor
+source/node_modules
+source/!javascripts/vendor
+source/!styles/vendor
+
+source/cache/*
+
+# .db

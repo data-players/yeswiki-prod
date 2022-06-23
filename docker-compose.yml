@@ -9,10 +9,8 @@ services:
         # environment:
         #    - 'REPOSITORY=https://github.com/data-players/classe-dehors-yeswiki.git'
         volumes:
-            - ./addOn:/tmp/addOn
-            # - ./../classe-dehors-yeswiki:/var/www/html
+            # - ./../my-yeswiki:/var/www/html
             - ./source:/var/www/html
-            - ./start.sh:/start.sh
 
     db:
         image: mysql:5.6

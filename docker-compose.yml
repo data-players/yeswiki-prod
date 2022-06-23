@@ -1,6 +1,32 @@
 version: '3.3'
 
 services:
+
+  traefik:
+    image: "traefik:v2.3"
+    networks:
+      - semapps
+    command:
+      # - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=tech@data-players.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      # - "8080:8080"
+    volumes:
+      - "./data/letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
     yeswiki:
         build: .
         container_name: yeswiki
@@ -11,6 +37,11 @@ services:
         volumes:
             # - ./../my-yeswiki:/var/www/html
             - ./source:/var/www/html
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.routers.middleware.rule=Host(`yeswiki.dataplayers.com`)"
+          - "traefik.http.routers.middleware.entrypoints=websecure"
+          - "traefik.http.routers.middleware.tls.certresolver=myresolver"
 
     db:
         image: mysql:5.6
